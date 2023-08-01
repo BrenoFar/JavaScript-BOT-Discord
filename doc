@@ -1,0 +1,24 @@
+Passo 1: Instalar todos os packages
+Packages:
+npm i discord.js
+npm i distube
+npm i dotenv
+npm i sodium-native
+npm i @discordjs/voice
+npm i @discordjs/opus
+
+Passo 2: Criar a estruturação dos arquivos
+
+Passo 3: Criar o bot e colocar token e invitar pro servidor
+
+Passo 4: Iniciar a configuração do BOT
+1. client id é o ID do meu BOT
+2. Permissões são pra saber se o usuário tem tal permissão pra poder usar o bot
+
+Passo 5: Criar comandos de música para o BOT
+
+Passo 6: Começar as animações
+1. instalar alguns packages de plugins
+@distube/soundcloud
+@distube/spotify
+@distube/yt-dlp
