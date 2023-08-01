@@ -1,0 +1,12 @@
+{
+    "client_id": "859334705689264138",
+    "version": "1.0.0",
+    "bot_author": {
+        "username": "Brenin",
+        "id": "310472168230223873"
+    },
+    "permissions": {
+        "sendMessage": "sendMessage",
+        "VoiceJoin": "Connect"
+    }
+}
