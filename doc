@@ -17,8 +17,18 @@ Passo 4: Iniciar a configuração do BOT
 
 Passo 5: Criar comandos de música para o BOT
 
-Passo 6: Começar as animações
+Passo 6: Começar a dar vida com o /slash
 1. instalar alguns packages de plugins
 @distube/soundcloud
 @distube/spotify
 @distube/yt-dlp
+
+Passo 7: Criar o bot de Musica
+1. Completamos o carregamento de comandos
+2. Carregar todos os eventos
+3. loadcommands
+4. Register slash
+5. Distube events
+6. events
+7. escrever index.js
+8. escrever todos os comandos de musicas
