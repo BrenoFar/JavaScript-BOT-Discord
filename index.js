@@ -1,52 +1,58 @@
-const { Client, GatewayIntentBits, Collection, REST, Routes } = require("discord.js");
+//discord.js imports
+const { Client, GatewayIntentBits, Collection } = require("discord.js");
 const { Guilds, GuildMessages, GuildVoiceStates, GuildIntegrations } = GatewayIntentBits;
-const { DisTube } = require("distube");
-const { client_id } = require("./configuration/config.json")
 
-const bot = new Client({ // Instancia o bot
-    intents: [Guilds, GuildMessages, GuildVoiceStates, GuildIntegrations],
-});
+
+// Distube Import
+const { DisTube } = require("distube");
+const {SpotifyPlugin} = require("@distube/spotify");
+const { SoundCloudPlugin } = require("@distube/soundcloud");
+const {YtDlpPlugin} = require("@distube/yt-dlp");
+
+
+const { client_id } = require("./configuration/config.json")
+const loadcommands = require("./utils/loadcommands");
+
+
 
 
 // para acessar o token do .env 
 require("dotenv").config();
 
+const bot = new Client({ // Instancia o bot
+  intents: [Guilds, GuildMessages, GuildVoiceStates, GuildIntegrations],
+});
+
 //registrar os comandos SLASH
+require("./utils/RegisterSlash")(bot, client_id, process.env.TOKEN);
 
-const commands = [
-    {
-      name: 'ping',
-      description: 'Replies with Pong!',
-    },
-  ];
-  
-  const rest = new REST({ version: '10' }).setToken(process.env.TOKEN); // token do bot
-  
-  (async function(){
-    try {
-        console.log('Started refreshing application (/) commands.');
-      
-        await rest.put(Routes.applicationCommands(client_id), { body: commands });
-      
-        console.log('Successfully reloaded application (/) commands.');
-      } catch (error) {
-        console.error(error);
-      }
-  })();
-  
-  
 
-  // Configurações básicas de inicialização do bot
-  bot.on('ready', () => {
-    console.log(`Logged in as ${bot.user.tag}!`);
-  });
-  
-  bot.on('interactionCreate', async interaction => {
-    if (!interaction.isChatInputCommand()) return;
-  
-    if (interaction.commandName === 'ping') {
-      await interaction.reply('Pong!');
-    }
-  });
-  
-  bot.login(process.env.TOKEN);
+
+bot.commands = new Collection(); // criando uma nova coleção de comandos
+bot.aliases = new Collection(); // criando uma nova coleção de aliases
+
+//distube
+bot.distube = new DisTube(bot, {
+  leaveOnEmpty: false,
+  leaveOnFinish: false,
+  leaveOnStop: false,
+  emitNewSongOnly: true,
+  emitAddSongWhenCreatingQueue: false,
+  emitAddListWhenCreatingQueue: false,
+  nsfw: true, // para ativar o modo nsfw
+  plugins : [new SpotifyPlugin({
+    emitEventsAfterFetching: true,
+  }),
+  new SoundCloudPlugin(),
+  new YtDlpPlugin({
+    update: false,
+  }),
+  ],
+});
+
+// importando 'loadEvents' da pasta utils
+require("./utils/loadEvents")(bot);
+
+loadcommands(bot);
+
+bot.login(process.env.TOKEN);
